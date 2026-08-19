@@ -26,7 +26,7 @@ public class AccountController {
         return accountRepository.findAll();
     }
 
-    @GetMapping("/accounts/{id}")
+    @GetMapping("/{id}")
     public Account getAccountById(@PathVariable Long id) {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Счет не найден"));
