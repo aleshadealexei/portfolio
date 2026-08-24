@@ -1,9 +1,14 @@
 package org.example.portfolio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -15,19 +20,37 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Подвох №1: ФИО в одной строке
-    private String fio;
+    @Column(name = "last_name")
+    private String lastName;
 
-    // Подвох №2: Регион в одной строке (не вынесен в справочник)
-    private String region;
+    @Column(name = "first_name")
+    private String firstName;
 
-    // Подвох №3: Телефон в свободном формате
-    private String phone;
+    private String patronymic;
 
+    @Column(unique = true)
     private String inn;
+
+    @Column(unique = true)
     private String snils;
 
-    // Статус AML-проверки (null — еще не проверен)
+    private String phone;
+
     @Column(name = "aml_status")
     private Boolean amlStatus;
+
+    @Column(name = "last_aml_check")
+    private LocalDateTime lastAmlCheck;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "region_id", nullable = false)
+    private Region region;
+
+    @OneToMany(
+            mappedBy = "client",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonManagedReference
+    private List<Account> accounts = new ArrayList<>();
 }
