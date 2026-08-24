@@ -41,6 +41,14 @@ public class AccountController {
         account.setBalance(request.balance());
         account.setClient(clientOptional.get());
 
+        if (accountRepository.existsByAccountNumber(request.accountNumber())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "error", "Счет с таким номером уже существует"
+                    ));
+        }
+
         return ResponseEntity.ok(accountRepository.save(account));
     }
 

@@ -38,6 +38,22 @@ public class ClientController {
                     ));
         }
 
+        if (clientRepository.existsByInn(request.inn())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "error", "Клиент с таким ИНН уже существует"
+                    ));
+        }
+
+        if (clientRepository.existsBySnils(request.snils())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "error", "Клиент с таким СНИЛС уже существует"
+                    ));
+        }
+
         Client client = new Client();
 
         client.setLastName(request.lastName());
