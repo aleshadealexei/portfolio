@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
+    boolean existsByInn(String inn);
+    boolean existsBySnils(String snils);
 }
