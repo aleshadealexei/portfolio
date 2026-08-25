@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -125,7 +125,7 @@ public class ClientController {
         }
 
         Client client = clientOptional.get();
-        client.setLastAmlCheck(LocalDateTime.now());
+        client.setLastAmlCheck(Instant.now());
         clientRepository.save(client);
 
         return ResponseEntity.noContent().build();
